@@ -18,8 +18,8 @@ const getUsers = (req, res) => {
 
 const getUserById = (req, res) => {
 
-  User.findById(req.params.userId )
-    .onFail(() => {
+  User.findById(req.params.userId)
+    .orFail(() => {
       throw new UserNotFound();
     })
     .then((user) => res.status(200).send({ user }))
@@ -55,7 +55,7 @@ const editUser = (req, res) => {
     { name, about }, {new: true, runValidators: true, upset: false,
     },
   )
-    .onFail(() => {
+    .orFail(() => {
       throw new UserNotFound();
     })
     .then((user) => res.status(200).send({ user }))
@@ -78,7 +78,7 @@ const editAvatar = (req, res) => {
     { avatar }, {new: true, runValidators: true, upset: false,
     },
   )
-    .onFail(() => {
+    .orFail(() => {
       throw new UserNotFound();
     })
     .then((user) => res.status(200).send({ user }))
