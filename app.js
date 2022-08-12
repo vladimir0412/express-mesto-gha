@@ -16,12 +16,6 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
 
-// app.use('*', (req, res) => {
-//   res.status(NotFound).send({
-//     message: 'Страница не найдена',
-//   });
-// });
-
 app.use((req, res, next) => {
   req.user = {
     _id: '62f5c2395427958963f29f3a'
@@ -34,5 +28,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', usersRouter);
 app.use('/', cardsRouter);
+
+app.use('*', (req, res) => {
+  res.status(NotFound).send({
+    message: 'Страница не найдена',
+  });
+});
 
 app.listen(3000);
