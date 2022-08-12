@@ -8,9 +8,9 @@ const getUsers = (req, res) => {
     .then((users) => res.status(200).send({ users }))
     .catch((error) => {
       if(error.name === 'ValidationError') {
-        res.status(400).send({ message: `Запрашиваемый пользователь не найден ${error}` })
+        res.status(400).send({ message: `Запрашиваемый пользователь не найден ${error}` });
       } else {
-        res.status(500).send({ message: `Произошла ошибка сервера ${error}` })
+        res.status(500).send({ message: `Произошла ошибка сервера ${error}` });
       }
     }
   );
@@ -25,9 +25,9 @@ const getUserById = (req, res) => {
     .then((user) => res.status(200).send({ user }))
     .catch((error) => {
       if(error.name === 'UserNotFound') {
-        res.status(err.status).send(err)
+        res.status(error.status).send(error);
       } else {
-        res.status(500).send({ message: `Произошла ошибка сервера ${error}` })
+        res.status(500).send({ message: `Произошла ошибка сервера ${error}` });
       }
     }
   );
@@ -37,12 +37,12 @@ const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
   User.create({ name, about, avatar })
-    .then((user) => res.status(201).send({ user }))
+    .then((user) => res.status(201).send({ data: user }))
     .catch((error) => {
       if(error.name === 'ValidationError') {
-        res.status(400).send({ message: `Произошла ошибка при создании пользователя ${error}` })
+        res.status(400).send({ message: `Произошла ошибка при создании пользователя ${error}` });
       } else {
-        res.status(500).send({ message: `Произошла ошибка сервера ${error}` })
+        res.status(500).send({ message: `Произошла ошибка сервера ${error}` });
       }
     }
   );
@@ -61,11 +61,11 @@ const editUser = (req, res) => {
     .then((user) => res.status(200).send({ user }))
     .catch((error) => {
       if(error.name === 'UserNotFound') {
-        res.status(err.status).send(err);
+        res.status(error.status).send(error);
       } else if (error.name === 'ValidationError') {
-        res.status(400).send({ message: `Произошла ошибка при редактировании профиля ${error}` })
+        res.status(400).send({ message: `Произошла ошибка при редактировании профиля ${error}` });
       } else {
-        res.status(500).send({ message: `Произошла ошибка сервера ${error}` })
+        res.status(500).send({ message: `Произошла ошибка сервера ${error}` });
       }
     }
   );
@@ -84,11 +84,11 @@ const editAvatar = (req, res) => {
     .then((user) => res.status(200).send({ user }))
     .catch((error) => {
       if(error.name === 'UserNotFound') {
-        res.status(err.status).send(err);
+        res.status(error.status).send(error);
       } else if (error.name === 'ValidationError') {
         res.status(400).send({ message: `Произошла ошибка при смене аватара ${error}` })
-      } else {
-        res.status(500).send({ message: `Произошла ошибка сервера ${error}` })
+      } else {;
+        res.status(500).send({ message: `Произошла ошибка сервера ${error}` });
       }
     }
   );

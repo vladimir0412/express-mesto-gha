@@ -35,7 +35,7 @@ const deleteCardById = (req, res) => {
   Card.findById(req.params.userId )
     .then((card) => res.status(201).send({ card }))
     .catch((error) =>
-      res.status(404).send({ message: `Карточки не найдена ${error}` })
+      res.status(404).send({ message: `Карточка не найдена ${error}` })
     );
 };
 

@@ -4,7 +4,6 @@ const path = require('path');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const bodyParser = require('body-parser');
-const NotFound = 400;
 
 const app = express();
 
@@ -18,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // для приёма ве�
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '62f668c82fbb27dbbc7a5018'
+    _id: '62f676ce3be8a4ecc0baf145'
   };
 
   next();
@@ -28,11 +27,5 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', usersRouter);
 app.use('/', cardsRouter);
-
-app.use('*', (req, res) => {
-  res.status(NotFound).send({
-    message: 'Страница не найдена',
-  });
-});
 
 app.listen(3000);
