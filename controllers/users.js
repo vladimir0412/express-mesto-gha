@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const UserNotFound = require('../errors/UserNotFound');
+const notFound = require('../errors/notFound');
 
 const getUsers = (req, res) => {
   const { name, about, avatar } = req.body;
@@ -20,11 +20,11 @@ const getUserById = (req, res) => {
 
   User.findById(req.params.userId)
     .orFail(() => {
-      throw new UserNotFound();
+      throw new notFound();
     })
     .then((user) => res.status(200).send({ user }))
     .catch((error) => {
-      if(error.name === 'UserNotFound') {
+      if(error.name === 'notFound') {
         res.status(error.status).send(error);
       } else if (error.name === 'CastError') {
         res.status(400).send({ message: `Произошла ошибка: некорректные данные id ${error}` });
@@ -58,11 +58,11 @@ const editUser = (req, res) => {
     },
   )
     .orFail(() => {
-      throw new UserNotFound();
+      throw new notFound();
     })
     .then((user) => res.status(200).send({ user }))
     .catch((error) => {
-      if(error.name === 'UserNotFound') {
+      if(error.name === 'notFound') {
         res.status(error.status).send(error);
       } else if (error.name === 'ValidationError') {
         res.status(400).send({ message: `Произошла ошибка при редактировании профиля ${error}` });
@@ -81,11 +81,11 @@ const editAvatar = (req, res) => {
     },
   )
     .orFail(() => {
-      throw new UserNotFound();
+      throw new notFound();
     })
     .then((user) => res.status(200).send({ user }))
     .catch((error) => {
-      if(error.name === 'UserNotFound') {
+      if(error.name === 'notFound') {
         res.status(error.status).send(error);
       } else if (error.name === 'ValidationError') {
         res.status(400).send({ message: `Произошла ошибка при смене аватара ${error}` })

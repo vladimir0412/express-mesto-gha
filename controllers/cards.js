@@ -1,4 +1,5 @@
 const Card = require('../models/card');
+const notFound = require('../errors/notFound');
 
 const getCards = (req, res) => {
   const { name, link, owner, likes, createdAt } = req.body;
@@ -35,7 +36,7 @@ const deleteCardById = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId )
     .then((card) => res.status(200).send({ card }))
     .catch((error) => {
-      if(error.name === 'UserNotFound') {
+      if(error.name === 'notFound') {
         res.status(error.status).send(error);
       } else if (error.name === 'CastError') {
         res.status(400).send({ message: `Произошла ошибка: некорректные данные id ${error}` });
