@@ -57,11 +57,17 @@ const likeCard = (req, res) => {
     { new: true },
   )
     .then((card) => res.status(200).send({ card }))
+    .orFail(() => {
+      throw new NotFound();
+    })
+    .then((card) => res.status(200).send({ card }))
     .catch((error) => {
-      if(error.name === 'ValidationError') {
-        res.status(400).send({ message: `Произошла ошибка идентификации пользователя ${error}` })
+      if(error.name === 'NotFound') {
+        res.status(error.status).send(error);
+      } else if (error.name === 'ValidationError') {
+        res.status(400).send({ message: `Произошла ошибка: некорректные данные id ${error}` });
       } else {
-        res.status(500).send({ message: `Произошла ошибка сервера ${error}` })
+        res.status(500).send({ message: `Произошла ошибка сервера ${error}` });
       }
     }
   );
@@ -69,16 +75,22 @@ const likeCard = (req, res) => {
 
 const dislikeCard = (req, res) => {
 
-  Card.findByIdAndUpdate(req.params.cardId,
+  Card.findByIdAndRemove(req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
     .then((card) => res.status(200).send({ card }))
+    .orFail(() => {
+      throw new NotFound();
+    })
+    .then((card) => res.status(200).send({ card }))
     .catch((error) => {
-      if(error.name === 'ValidationError') {
-        res.status(400).send({ message: `Произошла ошибка идентификации пользователя ${error}` })
+      if(error.name === 'NotFound') {
+        res.status(error.status).send(error);
+      } else if (error.name === 'ValidationError') {
+        res.status(400).send({ message: `Произошла ошибка: некорректные данные id ${error}` });
       } else {
-        res.status(500).send({ message: `Произошла ошибка сервера ${error}` })
+        res.status(500).send({ message: `Произошла ошибка сервера ${error}` });
       }
     }
   );
