@@ -26,7 +26,7 @@ const getUserById = (req, res) => {
     .catch((error) => {
       if(error.name === 'UserNotFound') {
         res.status(error.status).send(error);
-      } else if (error.name === 'ValidationError') {
+      } else if (error.name === 'CastError') {
         res.status(400).send({ message: `Произошла ошибка: некорректные данные id ${error}` });
       } else {
         res.status(500).send({ message: `Произошла ошибка сервера ${error}` });
