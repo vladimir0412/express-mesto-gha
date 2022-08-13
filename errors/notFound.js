@@ -1,8 +1,8 @@
 const ApplicationError = require('./ApplicationError');
 
-module.exports = class notFound extends ApplicationError {
+module.exports = class NotFound extends ApplicationError {
   constructor() {
-    super(404, 'Пользователь не найден');
+    super(404, 'Объект запроса не найден');
   }
 }
 

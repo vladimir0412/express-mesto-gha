@@ -1,5 +1,5 @@
 const Card = require('../models/card');
-const notFound = require('../errors/notFound');
+const NotFound = require('../errors/NotFound');
 
 const getCards = (req, res) => {
   const { name, link, owner, likes, createdAt } = req.body;
@@ -34,9 +34,12 @@ const createCard = (req, res) => {
 const deleteCardById = (req, res) => {
 
   Card.findByIdAndRemove(req.params.cardId )
+    .orFail(() => {
+      throw new NotFound();
+    })
     .then((card) => res.status(200).send({ card }))
     .catch((error) => {
-      if(error.name === 'notFound') {
+      if(error.name === 'NotFound') {
         res.status(error.status).send(error);
       } else if (error.name === 'CastError') {
         res.status(400).send({ message: `Произошла ошибка: некорректные данные id ${error}` });
