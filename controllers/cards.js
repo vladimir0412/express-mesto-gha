@@ -32,7 +32,7 @@ const createCard = (req, res) => {
 
 const deleteCardById = (req, res) => {
 
-  Card.findByIdAndDelete(req.params.userId )
+  Card.findByIdAndRemove(req.params.card._id )
     .then((card) => res.status(200).send({ card }))
     .catch((error) => {
       if(error.name === 'UserNotFound') {
