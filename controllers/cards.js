@@ -3,7 +3,7 @@ const Card = require('../models/card');
 const getCards = (req, res) => {
   const { name, link, owner, likes, createdAt } = req.body;
 
-  Card.get({ name, link, owner, likes, createdAt })
+  Card.find({ name, link, owner, likes, createdAt })
     .then((card) => res.status(200).send({ card }))
     .catch((error) => {
       if(error.name === 'ValidationError') {
@@ -39,7 +39,7 @@ const deleteCardById = (req, res) => {
     );
 };
 
-const likeCard = (req, res) =>
+const likeCard = (req, res) => {
 
   Card.findByIdAndUpdate(req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
@@ -54,9 +54,9 @@ const likeCard = (req, res) =>
       }
     }
   );
+};
 
-
-const dislikeCard = (req, res) =>
+const dislikeCard = (req, res) => {
 
   Card.findByIdAndUpdate(req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
@@ -71,6 +71,6 @@ const dislikeCard = (req, res) =>
       }
     }
   );
-
+};
 
 module.exports = { getCards, createCard, deleteCardById, likeCard, dislikeCard };
