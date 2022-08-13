@@ -4,7 +4,7 @@ const getCards = (req, res) => {
   const { name, link, owner, likes, createdAt } = req.body;
 
   Card.get({ name, link, owner, likes, createdAt })
-    .then((card) => res.status(201).send({ card }))
+    .then((card) => res.status(200).send({ card }))
     .catch((error) => {
       if(error.name === 'ValidationError') {
         res.status(400).send({ message: `Произошла ошибка при получении карточек ${error}` })
@@ -33,7 +33,7 @@ const createCard = (req, res) => {
 const deleteCardById = (req, res) => {
 
   Card.findById(req.params.userId )
-    .then((card) => res.status(201).send({ card }))
+    .then((card) => res.status(200).send({ card }))
     .catch((error) =>
       res.status(404).send({ message: `Карточка не найдена ${error}` })
     );
