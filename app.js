@@ -4,6 +4,7 @@ const path = require('path');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const bodyParser = require('body-parser');
+const NotFound = require('./errors/NotFound');
 
 const app = express();
 
@@ -25,11 +26,11 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('*', (req, res) => {
-  res.status(404).send({ message: `Страница не найдена ${error}` });
-})
-
 app.use('/', usersRouter);
 app.use('/', cardsRouter);
+
+app.use('*', (req, res) => {
+  res.status(NotFound).send({ message: `Страница не найдена ${error}` });
+});
 
 app.listen(3000);
