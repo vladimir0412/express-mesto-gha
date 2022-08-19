@@ -33,7 +33,7 @@ const createCard = (req, res) => {
 
 const deleteCardById = (req, res) => {
 
-  Card.findByIdAndRemove(req.params.cardId )
+  Card.findByIdAndRemove(req.params.cardId)
     .orFail(() => {
       throw new NotFound();
     })
