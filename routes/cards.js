@@ -1,5 +1,7 @@
 const router = require('express').Router(); // создали роутер
-const { getCards, createCard, deleteCardById, likeCard, dislikeCard } = require('../controllers/cards'); // данные нужны для роутинга, поэтому импортируем их
+const {
+  getCards, createCard, deleteCardById, likeCard, dislikeCard,
+} = require('../controllers/cards'); // данные нужны для роутинга, поэтому импортируем их
 
 router.get('/cards', getCards);
 

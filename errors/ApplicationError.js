@@ -7,4 +7,4 @@ module.exports = class ApplicationError extends Error {
 
     Error.captureStackTrace(this, this.constructor);
   }
-}
+};

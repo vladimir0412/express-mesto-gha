@@ -1,5 +1,7 @@
 const router = require('express').Router(); // создали роутер
-const { getUsers, getUserById, createUser, editUser, editAvatar } = require('../controllers/users'); // данные нужны для роутинга, поэтому импортируем их
+const {
+  getUsers, getUserById, createUser, editUser, editAvatar,
+} = require('../controllers/users'); // данные нужны для роутинга, поэтому импортируем их
 
 router.get('/users', getUsers);
 
