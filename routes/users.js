@@ -6,11 +6,13 @@ const {
 
 router.get('/users', getUsers);
 
-router.get('/users/:userId', getUserById);
+router.get('/users/:userId', celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().hex().length(24),
+  }),
+}), getUserById);
 
 router.get('/users/me', getUserInfo);
-
-// router.post('/users', createUser);
 
 router.patch('/users/me', celebrate({
   body: Joi.object().keys({
@@ -19,6 +21,10 @@ router.patch('/users/me', celebrate({
   }),
 }), editUser);
 
-router.patch('/users/me/avatar', editAvatar);
+router.patch('/users/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().regex(/https?:\/\/(\w{3}\.)?[1-9a-z\-.]{1,}\w\w(\/[1-90a-z.,_@%&?+=~/-]{1,}\/?)?#?/i),
+  }),
+}), editAvatar);
 
 module.exports = router; // экспортировали роутер
