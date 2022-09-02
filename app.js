@@ -2,13 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const bodyParser = require('body-parser');
-const { Joi, celebrate } = require('celebrate');
+const { errors, Joi, celebrate } = require('celebrate');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const auth = require('./middlewares/auth');
 const { createUser, login } = require('./controllers/users');
 
 const app = express();
+const NotFound = require('./errors/NotFound');
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/mestodb', {
@@ -41,8 +42,19 @@ app.use(auth);
 app.use('/', usersRouter);
 app.use('/', cardsRouter);
 
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Страница не найдена' });
+app.use('*', (req, res, next) => {
+  next(new NotFound('Страница не найдена'));
 });
+
+app.use((error, req, res, next) => {
+  if (error.statusCode) {
+    res.status(error.statusCode).send({ message: 'Ошибка сервера' });
+  } else {
+    res.status(500).send({ message: 'Ошибка сервера' });
+  }
+
+  next();
+});
+app.use(errors());
 
 app.listen(3000);
