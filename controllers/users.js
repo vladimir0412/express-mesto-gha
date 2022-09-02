@@ -37,33 +37,36 @@ const getUsers = (req, res) => {
     });
 };
 
-const getUserById = (req, res) => {
+const getUserById = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(() => {
-      throw new NotFound();
+      throw new NotFound('Пользователь не найден.');
     })
-    .then((user) => res.send({ user }))
+    .then((user) => {
+      res.send({ user });
+    })
     .catch((error) => {
-      if (error.name === 'NotFound') {
-        res.status(error.status).send(error);
-      } else if (error.name === 'CastError') {
-        res.status(BadRequest).send({ message: 'Произошла ошибка: некорректные данные id' });
+      if (error.name === 'CastError') {
+        next(new BadRequest('Пользователь не найден.'));
       } else {
-        res.status(ServerError).send({ message: 'Произошла ошибка сервера' });
+        next(error);
       }
     });
 };
 
-const getUserInfo = (req, res) => {
+const getUserInfo = (req, res, next) => {
   User.findById(req.user._id)
-    .then((user) => res.send({ user }))
+    .orFail(() => {
+      throw new NotFound('Пользователь не найден.');
+    })
+    .then((user) => {
+      res.send({ user });
+    })
     .catch((error) => {
-      if (error.name === 'NotFound') {
-        res.status(error.status).send(error);
-      } else if (error.name === 'CastError') {
-        res.status(BadRequest).send({ message: 'Произошла ошибка: некорректные данные id' });
+      if (error.name === 'CastError') {
+        next(new BadRequest('Пользователь не найден.'));
       } else {
-        res.status(ServerError).send({ message: 'Произошла ошибка сервера' });
+        next(error);
       }
     });
 };
