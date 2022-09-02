@@ -4,6 +4,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
+const auth = require('./middlewares/auth');
+const { createUser, login } = require('./controllers/users');
 
 const app = express();
 
@@ -15,15 +17,12 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '62f676ce3be8a4ecc0baf145',
-  };
-
-  next();
-});
-
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.post('/signup', createUser);
+app.post('/signin', login);
+
+app.use(auth);
 
 app.use('/', usersRouter);
 app.use('/', cardsRouter);
