@@ -80,7 +80,16 @@ const createUser = (req, res, next) => {
       about: req.body.about,
       avatar: req.body.avatar,
     }))
-    .then((user) => res.status(201).send({ data: user }))
+    .then((user) => {
+      const data = {
+        email: user.email,
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        _id: user._id,
+      };
+      res.status(201).send(data);
+    })
     .catch((error) => {
       if (error.code === 11000) {
         next(new ConflictError('Такой пользователь уже существует'));

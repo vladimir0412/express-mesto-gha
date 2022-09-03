@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const bodyParser = require('body-parser');
-const { errors, Joi, celebrate } = require('celebrate');
+const { Joi, celebrate } = require('celebrate');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const auth = require('./middlewares/auth');
@@ -45,16 +45,5 @@ app.use('/', cardsRouter);
 app.use('*', (req, res, next) => {
   next(new NotFound('Страница не найдена'));
 });
-
-app.use((error, req, res, next) => {
-  if (error.statusCode) {
-    res.status(error.statusCode).send({ message: 'Ошибка сервера' });
-  } else {
-    res.status(500).send({ message: 'Ошибка сервера' });
-  }
-
-  next();
-});
-app.use(errors());
 
 app.listen(3000);
