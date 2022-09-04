@@ -54,7 +54,8 @@ const getUserById = (req, res, next) => {
 };
 
 const getUserInfo = (req, res, next) => {
-  User.findById(req.user._id)
+  const userId = req.user._id;
+  User.findById(userId)
     .orFail(() => {
       throw new NotFound('Пользователь не найден.');
     })
