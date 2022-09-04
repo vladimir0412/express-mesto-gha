@@ -1,5 +1,5 @@
-const BadRequest = 400;
-const ServerError = 500;
+const BadRequest = require('../errors/BadRequest');
+const ServerError = require('../errors/ServerError');
 const NotFound = require('../errors/NotFound');
 const Card = require('../models/card');
 

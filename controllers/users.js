@@ -1,11 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const NotFound = require('../errors/NotFound');
+const BadRequest = require('../errors/BadRequest');
+const Conflict = require('../errors/Conflict');
+const ServerError = require('../errors/ServerError');
 const User = require('../models/user');
-
-const BadRequest = 400;
-const ServerError = 500;
-const ConflictError = 409;
 
 const login = (req, res) => {
   const { email, password } = req.body;
@@ -92,7 +91,7 @@ const createUser = (req, res, next) => {
     })
     .catch((error) => {
       if (error.code === 11000) {
-        next(new ConflictError('Такой пользователь уже существует'));
+        next(new Conflict('Такой пользователь уже существует'));
       } else if (error.name === 'ValidationError') {
         next(new BadRequest('Некорректные данные для создании пользователя'));
       } else {

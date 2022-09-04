@@ -10,6 +10,7 @@ const { createUser, login } = require('./controllers/users');
 
 const app = express();
 const NotFound = require('./errors/NotFound');
+const ServerError = require('./errors/ServerError');
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/mestodb', {
@@ -52,7 +53,7 @@ app.use((error, req, res, next) => {
   if (error.statusCode) {
     res.status(error.statusCode).send({ message: error.message });
   } else {
-    res.status(502).send({ message: 'Произошла ошибка' });
+    res.status(ServerError).send({ message: 'Произошла ошибка' });
   }
   next();
 });

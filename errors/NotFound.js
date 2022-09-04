@@ -1,7 +1,8 @@
-const ApplicationError = require('./ApplicationError');
+const { NotFoundCode } = require('./statusCodes');
 
-module.exports = class NotFound extends ApplicationError {
-  constructor() {
-    super(404, 'Объект запроса не найден');
+module.exports = class NotFound extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = NotFoundCode;
   }
 };
