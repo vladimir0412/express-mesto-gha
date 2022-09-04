@@ -2,8 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
-const Unauthorized = require('../errors/Unauthorized');
-const CreatedCode = require('../errors/statusCodes');
 const Conflict = require('../errors/Conflict');
 const ServerError = require('../errors/ServerError');
 const User = require('../models/user');
@@ -20,7 +18,7 @@ const login = (req, res) => {
       res.send({ token });
     })
     .catch(() => {
-      res.status(Unauthorized).send({ message: 'Пользователь не найден' });
+      res.status(401).send({ message: 'Пользователь не найден' });
     });
 };
 
@@ -89,7 +87,7 @@ const createUser = (req, res, next) => {
         avatar: user.avatar,
         _id: user._id,
       };
-      res.status(CreatedCode).send(data);
+      res.status(201).send(data);
     })
     .catch((error) => {
       if (error.code === 11000) {
