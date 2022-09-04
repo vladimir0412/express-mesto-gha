@@ -22,18 +22,10 @@ const login = (req, res) => {
     });
 };
 
-const getUsers = (req, res) => {
-  const { name, about, avatar } = req.body;
-
-  User.find({ name, about, avatar })
-    .then((users) => res.send({ users }))
-    .catch((error) => {
-      if (error.name === 'ValidationError') {
-        res.status(BadRequest).send({ message: 'Запрашиваемый пользователь не найден' });
-      } else {
-        res.status(ServerError).send({ message: 'Произошла ошибка сервера' });
-      }
-    });
+module.exports.getUsers = (req, res, next) => {
+  User.find({})
+    .then((user) => res.send({ user }))
+    .catch(next);
 };
 
 const getUserById = (req, res, next) => {
