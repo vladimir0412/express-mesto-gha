@@ -39,14 +39,14 @@ const getUsers = (req, res) => {
 const getUserById = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(() => {
-      throw new NotFound('Пользователь не найден.');
+      throw new NotFound('Пользователь не найден');
     })
     .then((user) => {
       res.send({ user });
     })
     .catch((error) => {
       if (error.name === 'CastError') {
-        next(new BadRequest('Пользователь не найден.'));
+        next(new BadRequest('Нерпавильный запрос'));
       } else {
         next(error);
       }
@@ -54,17 +54,16 @@ const getUserById = (req, res, next) => {
 };
 
 const getUserInfo = (req, res, next) => {
-  const userId = req.user._id;
-  User.findById(userId)
+  User.findById(req.user._id)
     .orFail(() => {
-      throw new NotFound('Пользователь не найден.');
+      throw new NotFound('Пользователь не найден');
     })
     .then((user) => {
       res.send({ user });
     })
     .catch((error) => {
       if (error.name === 'CastError') {
-        next(new BadRequest('Пользователь не найден.'));
+        next(new BadRequest('Нерпавильный запрос'));
       } else {
         next(error);
       }
