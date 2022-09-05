@@ -29,8 +29,7 @@ const getUsers = (req, res, next) => {
 };
 
 const getUserById = (req, res, next) => {
-  const userId = req.user._id;
-  console.log(userId);
+  console.log(req.params.userId);
   User.findById(req.params.userId)
     .orFail(() => {
       throw new NotFound('Пользователь не найден');
@@ -48,6 +47,7 @@ const getUserById = (req, res, next) => {
 };
 
 const getUserInfo = (req, res, next) => {
+  console.log(req.user._id);
   User.findById(req.user._id)
     .orFail(() => {
       throw new NotFound('Пользователь не найден');
