@@ -21,6 +21,10 @@ router.patch('/users/me', celebrate({
   }),
 }), editUser);
 
-router.patch('/users/me/avatar', editAvatar);
+router.patch('/users/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().regex(/https?:\/\/(\w{3}\.)?[1-9a-z\-.]{1,}\w\w(\/[1-90a-z.,_@%&?+=~/-]{1,}\/?)?#?/i),
+  }),
+}), editAvatar);
 
 module.exports = router; // экспортировали роутер
