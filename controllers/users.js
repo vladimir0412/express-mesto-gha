@@ -6,7 +6,7 @@ const Conflict = require('../errors/Conflict');
 const ServerError = require('../errors/ServerError');
 const User = require('../models/user');
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -17,9 +17,7 @@ const login = (req, res) => {
       // вернём токен
       res.send({ token });
     })
-    .catch(() => {
-      res.status(401).send({ message: 'Пользователь не найден' });
-    });
+    .catch(next);
 };
 
 const getUsers = (req, res, next) => {
@@ -29,7 +27,6 @@ const getUsers = (req, res, next) => {
 };
 
 const getUserById = (req, res, next) => {
-  console.log(req.params.userId);
   User.findById(req.params.userId)
     .orFail(() => {
       throw new NotFound('Пользователь не найден');
@@ -94,7 +91,7 @@ const createUser = (req, res, next) => {
     });
 };
 
-const editUser = (req, res) => {
+const editUser = (req, res, next) => {
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
@@ -103,12 +100,10 @@ const editUser = (req, res) => {
     })
     .then((user) => res.send({ user }))
     .catch((error) => {
-      if (error.name === 'NotFound') {
-        res.status(error.status).send(error);
-      } else if (error.name === 'ValidationError') {
-        res.status(BadRequest).send({ message: 'Произошла ошибка при редактировании профиля' });
+      if (error.name === 'ValidationError') {
+        next(new BadRequest('Некорректные данные редактирования пользователя'));
       } else {
-        res.status(ServerError).send({ message: 'Произошла ошибка сервера' });
+        next(error);
       }
     });
 };
