@@ -39,6 +39,7 @@ app.post('/signup', celebrate({
 }), createUser);
 
 app.use(auth);
+app.use(handler);
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
@@ -48,7 +49,5 @@ app.use('*', (req, res, next) => {
 });
 
 app.use(errors());
-
-app.use(handler);
 
 app.listen(3000);
