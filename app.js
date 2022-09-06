@@ -7,7 +7,7 @@ const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const auth = require('./middlewares/auth');
 const { createUser, login } = require('./controllers/users');
-const handler = require('./middlewares/handler');
+const { handler } = require('./middlewares/handler');
 
 const app = express();
 const NotFound = require('./errors/NotFound');
@@ -40,8 +40,8 @@ app.post('/signup', celebrate({
 
 app.use(auth);
 
-app.use('/', usersRouter);
-app.use('/', cardsRouter);
+app.use('/users', usersRouter);
+app.use('/cards', cardsRouter);
 
 app.use('*', (req, res, next) => {
   next(new NotFound('Страница не найдена'));
