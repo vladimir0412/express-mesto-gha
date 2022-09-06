@@ -1,6 +1,6 @@
 const ServerError = require('../errors/ServerError');
 
-const handler = ((error, req, res, next) => {
+module.exports.handler = ((error, req, res, next) => {
   if (error.statusCode) {
     res.status(error.statusCode).send({ message: error.message });
   } else {
@@ -8,5 +8,3 @@ const handler = ((error, req, res, next) => {
   }
   next();
 });
-
-module.exports = { handler };
